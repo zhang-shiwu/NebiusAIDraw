@@ -32,6 +32,44 @@ Nebius AI Draw是一款功能强大的AI图像生成工具，利用先进的图�
 4. 等待几秒钟，欣赏AI创作的图像
 5. 您的所有生成历史都会自动保存，可随时查看
 
+## 环境变量配置
+
+本项目需要配置以下环境变量才能正常工作：
+
+### 必需的环境变量
+
+- `NEBIUS_API_KEY` - Nebius AI服务的API密钥
+- `NEXT_PUBLIC_API_BASE_URL` - API基础URL，默认为`/api`
+
+### 配置方法
+
+#### 本地开发环境配置
+
+1. 在项目根目录创建`.env.local`文件
+2. 添加以下内容（替换为您自己的值）：
+
+```
+NEBIUS_API_KEY=您的Nebius_API密钥
+NEXT_PUBLIC_API_BASE_URL=/api
+```
+
+#### Vercel部署配置
+
+1. 在Vercel项目设置中找到"Environment Variables"选项
+2. 添加上述环境变量及其值
+3. 重新部署项目以使环境变量生效
+
+#### 获取API密钥
+
+要获取Nebius API密钥，请按照以下步骤操作：
+
+1. 注册/登录[Nebius AI服务](https://nebius.ai)官方网站
+2. 导航至用户控制台中的"API密钥"部分
+3. 创建新的API密钥
+4. 复制密钥并妥善保存（注意：密钥通常只显示一次）
+
+注意：请勿在公共仓库中直接提交包含API密钥的文件。`.env.local`文件已在`.gitignore`中设置为忽略。
+
 ## 本地开发
 
 如果您想在本地运行和开发项目：
