@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
-import { ModelType, ResponseFormatType, OutputFormatType } from '@/types/generation';
 
 // 增强API密钥轮询逻辑
 let currentKeyIndex = 0;
@@ -21,7 +20,6 @@ function getNextApiKey(): string {
   
   // 如果有多个密钥，尝试找到最优的密钥
   if (apiKeys.length > 1) {
-    const now = Date.now();
     // 按使用次数和最后使用时间排序
     const sortedKeyIndices = apiKeys
       .map((_, index) => index)
@@ -159,14 +157,15 @@ export async function POST(req: NextRequest) {
             }, {} as typeof keyStats)
           }
         });
-      } catch (error: any) {
-        console.error(`API密钥 ${apiKey.substring(0, 8)}... 请求失败:`, error.response?.data || error.message);
+      } catch (error: unknown) {
+        const err = error as Error & { response?: { status?: number; data?: unknown } };
+        console.error(`API密钥 ${apiKey.substring(0, 8)}... 请求失败:`, err.response?.data || (err as Error).message);
         
         // 记录密钥错误
         markKeyError(apiKey);
         
         // 只有在是API密钥相关错误时才重试
-        const errorStatus = error.response?.status;
+        const errorStatus = err.response?.status;
         if (errorStatus === 401 || errorStatus === 403 || errorStatus === 429) {
           retryCount++;
           if (retryCount < maxRetries) {
@@ -181,23 +180,24 @@ export async function POST(req: NextRequest) {
     }
 
     throw new Error('所有API密钥都失败了，请稍后再试');
-  } catch (error: any) {
-    console.error('生成图像时出错:', error.response?.data || error.message);
+  } catch (error: unknown) {
+    const err = error as Error & { response?: { status?: number; data?: { error?: string } } };
+    console.error('生成图像时出错:', err.response?.data || (err as Error).message);
     let errorMessage = '生成图像时出错';
-    let statusCode = 500;
+    const statusCode = 500;
     
-    if (error.response?.status === 401 || error.response?.status === 403) {
+    if (err.response?.status === 401 || err.response?.status === 403) {
       errorMessage = 'API密钥无效或已过期';
-    } else if (error.response?.status === 429) {
+    } else if (err.response?.status === 429) {
       errorMessage = 'API请求太频繁，请稍后再试';
-    } else if (error.response?.data?.error) {
-      errorMessage = error.response.data.error;
-    } else if (error.message) {
-      errorMessage = error.message;
+    } else if (err.response?.data?.error) {
+      errorMessage = err.response.data.error;
+    } else if ('message' in err) {
+      errorMessage = err.message;
     }
     
     return NextResponse.json(
-      { error: errorMessage, details: error.response?.data || error.message },
+      { error: errorMessage, details: err.response?.data || ('message' in err ? err.message : '') },
       { status: statusCode }
     );
   }

@@ -35,7 +35,8 @@ export default function ApiKeyStatus() {
 
       const data = await response.json();
       setKeyStats(data.keyStats);
-    } catch (err: any) {
+    } catch (error: unknown) {
+      const err = error as Error & { message?: string };
       console.error('获取密钥状态出错:', err);
       setError(err.message || '获取密钥状态失败');
     } finally {

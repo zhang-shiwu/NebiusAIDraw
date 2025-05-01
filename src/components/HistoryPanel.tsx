@@ -1,15 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { FiClock, FiChevronDown, FiChevronUp, FiTrash2, FiDownload, FiRepeat, FiExternalLink, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiTrash2, FiDownload, FiRepeat, FiExternalLink, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useGenerationStore, GeneratedImage } from '@/store/generationStore';
 
 interface HistoryPanelProps {
-  onSelectPrompt: (prompt: string, negativePrompt: string, params: any) => void;
+  onSelectPrompt: (item: Pick<GeneratedImage, 'prompt' | 'negativePrompt' | 'parameters'>) => void;
 }
 
 export default function HistoryPanel({ onSelectPrompt }: HistoryPanelProps) {
-  const [isOpen, setIsOpen] = useState(true); // 默认展开
   const { history, removeFromHistory, clearHistory } = useGenerationStore();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6; // 每页显示6张图片
@@ -51,7 +50,7 @@ export default function HistoryPanel({ onSelectPrompt }: HistoryPanelProps) {
   };
 
   const reapplyPrompt = (item: GeneratedImage) => {
-    onSelectPrompt(item.prompt, item.negativePrompt, item.parameters);
+    onSelectPrompt(item);
   };
 
   const formatDate = (timestamp: number) => {

@@ -123,12 +123,13 @@ export default function ImageGenerator() {
           }
         });
       }
-    } catch (error: any) {
-      console.error('生成图像出错:', error);
+    } catch (error: unknown) {
+      const err = error as Error & { message?: string };
+      console.error('生成图像出错:', err);
       setGeneration({
         isGenerating: false,
         result: null,
-        error: error.message || '生成图像失败',
+        error: err.message || '生成图像失败',
       });
     }
   };

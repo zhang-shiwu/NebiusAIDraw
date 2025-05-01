@@ -14,7 +14,15 @@ interface AdvancedSettingsProps {
     responseFormat: ResponseFormatType;
     fileFormat: OutputFormatType;
   };
-  onSettingsChange: (settings: any) => void;
+  onSettingsChange: (settings: {
+    width: number;
+    height: number;
+    steps: number;
+    seed: number;
+    model: ModelType;
+    responseFormat: ResponseFormatType;
+    fileFormat: OutputFormatType;
+  }) => void;
 }
 
 export default function AdvancedSettings({ settings, onSettingsChange }: AdvancedSettingsProps) {

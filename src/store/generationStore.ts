@@ -23,12 +23,14 @@ interface GenerationStore {
   defaultModel: ModelType;
   defaultResponseFormat: ResponseFormatType;
   defaultFileFormat: OutputFormatType;
+  darkMode: boolean;
   addToHistory: (image: GeneratedImage) => void;
   removeFromHistory: (id: string) => void;
   clearHistory: () => void;
   setDefaultModel: (model: ModelType) => void;
   setDefaultResponseFormat: (format: ResponseFormatType) => void;
   setDefaultFileFormat: (format: OutputFormatType) => void;
+  toggleDarkMode: () => void;
 }
 
 export const useGenerationStore = create<GenerationStore>()(
@@ -38,6 +40,7 @@ export const useGenerationStore = create<GenerationStore>()(
       defaultModel: 'black-forest-labs/flux-schnell',
       defaultResponseFormat: 'b64_json',
       defaultFileFormat: 'png',
+      darkMode: false,
       addToHistory: (image) => 
         set((state) => ({ 
           history: [image, ...state.history].slice(0, 50) // 限制保存50条历史记录
@@ -50,6 +53,7 @@ export const useGenerationStore = create<GenerationStore>()(
       setDefaultModel: (model) => set({ defaultModel: model }),
       setDefaultResponseFormat: (format) => set({ defaultResponseFormat: format }),
       setDefaultFileFormat: (format) => set({ defaultFileFormat: format }),
+      toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
     }),
     {
       name: 'ai-image-generation-store',
