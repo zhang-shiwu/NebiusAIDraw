@@ -39,7 +39,6 @@ Nebius AI Draw是一款功能强大的AI图像生成工具，利用先进的图�
 ### 必需的环境变量
 
 - `NEBIUS_API_KEY` - Nebius AI服务的API密钥
-- `NEXT_PUBLIC_API_BASE_URL` - API基础URL，默认为`/api`
 
 ### 配置方法
 
@@ -50,7 +49,6 @@ Nebius AI Draw是一款功能强大的AI图像生成工具，利用先进的图�
 
 ```
 NEBIUS_API_KEY=您的Nebius_API密钥
-NEXT_PUBLIC_API_BASE_URL=/api
 ```
 
 #### Vercel部署配置
@@ -125,4 +123,3 @@ MIT License
 如有任何问题或建议，请通过以下方式联系：
 
 - GitHub Issues: [https://github.com/zhang-shiwu/NebiusAIDraw/issues](https://github.com/zhang-shiwu/NebiusAIDraw/issues)
-- Email: 1813938806@qq.com
